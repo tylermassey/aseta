@@ -1,0 +1,9 @@
+{
+    "short_name": "ASETA",
+    "name": "Another Simple Expense Tracking App",
+    "icons": [],
+    "start_url": "./index.html",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#ffffff"
+}
