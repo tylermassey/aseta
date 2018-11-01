@@ -8,7 +8,6 @@ interface OwnProps {
 
 class Auth extends React.Component<OwnProps, {}> {
     componentDidMount() {
-        // add redux
         startFirebaseAuth(this.props.setUser);
     }
 
