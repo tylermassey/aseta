@@ -1,6 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import App from './App';
-import './index.css';
+import { Provider } from 'react-redux';
 
-ReactDOM.render(<App />, document.getElementById('root') as HTMLElement);
+import App from './App';
+import env from './env/env';
+import { initFirebase } from './firebase';
+import './index.css';
+import { getStore, initStore } from './redux/store';
+
+initFirebase(env.firebase);
+initStore();
+
+ReactDOM.render(
+    <Provider store={getStore()}>
+        <App />
+    </Provider>,
+    document.getElementById('root') as HTMLElement
+);
