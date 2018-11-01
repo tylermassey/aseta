@@ -10,8 +10,11 @@ const startFirebaseAuth = (
 ) => {
     new ui.auth.AuthUI(firebase.auth()).start('#firebaseui', {
         signInOptions: [
-            firebase.auth.EmailAuthProvider.PROVIDER_ID,
             firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+            {
+                provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
+                requireDisplayName: false,
+            },
         ],
         callbacks: {
             signInSuccessWithAuthResult: (authResult, _) => {
