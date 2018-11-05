@@ -3,7 +3,10 @@ import * as ui from 'firebaseui';
 
 import { Firebase as FirebaseConfig } from './env/Config';
 
-const initFirebase = (config: FirebaseConfig) => firebase.initializeApp(config);
+const initFirebase = (config: FirebaseConfig) => {
+    firebase.initializeApp(config);
+    firebase.firestore().settings({ timestampsInSnapshots: true });
+};
 
 const startFirebaseAuth = (
     successCallback: (payload: { user: any }) => void

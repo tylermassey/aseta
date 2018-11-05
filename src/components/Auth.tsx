@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { startFirebaseAuth } from './firebase';
+import { startFirebaseAuth } from '../firebase';
 
 interface OwnProps {
     setUser: (payload: { user: any }) => void;
