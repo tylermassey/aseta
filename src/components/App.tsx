@@ -2,6 +2,7 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import CategoryService from '../api/categories/service';
 import ExpenseService from '../api/expenses/service';
 import { Action, setUser, SetUserPayload } from '../redux/auth/actions';
 import ReduxState from '../redux/state';
@@ -11,6 +12,7 @@ import ExpensePage from './ExpensePage';
 import './App.css';
 
 interface OwnProps {
+    categoryService: CategoryService;
     expenseService: ExpenseService;
 }
 
@@ -29,7 +31,10 @@ class App extends React.Component<AllProps, {}> {
         return (
             <div className="test">
                 {this.props.user ? (
-                    <ExpensePage expenseService={this.props.expenseService} />
+                    <ExpensePage
+                        categoryService={this.props.categoryService}
+                        expenseService={this.props.expenseService}
+                    />
                 ) : (
                     <Auth setUser={this.props.setUser} />
                 )}
