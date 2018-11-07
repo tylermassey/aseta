@@ -40,7 +40,7 @@ type AllProps = OwnProps & ReduxStateProps;
 class ExpensePage extends React.Component<AllProps, OwnState> {
     NAME = 'name';
     AMOUNT = 'amount';
-    CATEGORY = 'category';
+    CATEGORY = 'name';
     CATEGORY_IDS = 'categoryIds';
 
     constructor(props: AllProps) {
