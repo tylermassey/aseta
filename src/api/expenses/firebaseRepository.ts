@@ -1,11 +1,6 @@
 import { firestore } from 'firebase/app';
 
-import {
-    errorResponse,
-    Response,
-    ResponseType,
-    successResponse,
-} from '../response';
+import { errorResponse, Response, successResponse } from '../response';
 import { Expense } from './model';
 import { ExpenseRepository } from './service';
 
@@ -21,7 +16,7 @@ class ExpenseFirebaseRepository implements ExpenseRepository {
             const addedDoc = await this.collection.add(expense);
             return successResponse({ id: addedDoc.id, ...expense });
         } catch (err) {
-            return errorResponse(ResponseType.Error, err.message, expense);
+            return errorResponse(err.message, expense);
         }
     }
 }
