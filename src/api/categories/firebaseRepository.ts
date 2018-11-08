@@ -14,7 +14,7 @@ class CategoryFirebaseRepository implements CategoryRepository {
     async add(category: Category): Promise<Response<Category, Category>> {
         try {
             const addedDoc = await this.collection.add(category);
-            return successResponse(this.fromDoc(addedDoc));
+            return successResponse(this.fromDoc(await addedDoc.get()));
         } catch (err) {
             return errorResponse(err.message, category);
         }
