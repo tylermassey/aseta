@@ -1,15 +1,15 @@
-enum ResponseType {
+enum ResponseTypes {
     Success = 'success',
     Error = 'error',
 }
 
 interface SuccessResponse<T> {
-    type: ResponseType.Success;
+    type: ResponseTypes.Success;
     payload: T;
 }
 
 interface ErrorResponse<T> {
-    type: ResponseType.Error;
+    type: ResponseTypes.Error;
     message: string;
     payload: T;
 }
@@ -17,14 +17,14 @@ interface ErrorResponse<T> {
 type Response<T, U> = SuccessResponse<T> | ErrorResponse<U>;
 
 const successResponse = <T>(payload: T): SuccessResponse<T> => ({
-    type: ResponseType.Success,
+    type: ResponseTypes.Success,
     payload,
 });
 
 const errorResponse = <T>(message: string, payload: T): ErrorResponse<T> => ({
-    type: ResponseType.Error,
+    type: ResponseTypes.Error,
     message,
     payload,
 });
 
-export { ResponseType, Response, successResponse, errorResponse };
+export { ResponseTypes, Response, successResponse, errorResponse };

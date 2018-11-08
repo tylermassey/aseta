@@ -6,7 +6,7 @@ import { Category } from '../api/categories/model';
 import CategoryService from '../api/categories/service';
 import { AddExpensePayload } from '../api/expenses/model';
 import ExpenseService from '../api/expenses/service';
-import { ResponseType } from '../api/response';
+import { ResponseTypes } from '../api/response';
 import ReduxState from '../redux/state';
 
 enum Forms {
@@ -59,18 +59,22 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
     }
 
     async componentDidMount() {
+        await this.getCategories();
+    }
+
+    getCategories = async () => {
         const categoriesResponse = await this.props.categoryService.withUserId(
             this.props.user.uid
         );
         switch (categoriesResponse.type) {
-            case ResponseType.Error:
+            case ResponseTypes.Error:
                 break;
-            case ResponseType.Success:
+            case ResponseTypes.Success:
                 this.setState({
                     categories: categoriesResponse.payload,
                 });
         }
-    }
+    };
 
     submitExpense = async () => {
         const payload: AddExpensePayload = {
@@ -79,8 +83,8 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
         };
         const response = await this.props.expenseService.add(payload);
         switch (response.type) {
-            case ResponseType.Error:
-            case ResponseType.Success:
+            case ResponseTypes.Error:
+            case ResponseTypes.Success:
                 break;
         }
     };
@@ -92,8 +96,12 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
         };
         const response = await this.props.categoryService.add(payload);
         switch (response.type) {
-            case ResponseType.Error:
-            case ResponseType.Success:
+            case ResponseTypes.Error:
+                break;
+            case ResponseTypes.Success:
+                this.setState({
+                    categories: [...this.state.categories, response.payload],
+                });
                 break;
         }
     };
