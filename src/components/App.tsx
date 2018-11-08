@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import { Button } from 'reactstrap';
 import { bindActionCreators } from 'redux';
 
 import CategoryService from '../api/categories/service';
 import ExpenseService from '../api/expenses/service';
 import { Action, setUser, SetUserPayload } from '../redux/auth/actions';
 import ReduxState from '../redux/state';
+import { logout } from '../utils/auth';
 import Auth from './Auth';
 import ExpensePage from './ExpensePage';
 
@@ -31,10 +33,13 @@ class App extends React.Component<AllProps, {}> {
         return (
             <div className="test">
                 {this.props.user ? (
-                    <ExpensePage
-                        categoryService={this.props.categoryService}
-                        expenseService={this.props.expenseService}
-                    />
+                    <>
+                        <Button onClick={logout}>logout</Button>
+                        <ExpensePage
+                            categoryService={this.props.categoryService}
+                            expenseService={this.props.expenseService}
+                        />
+                    </>
                 ) : (
                     <Auth setUser={this.props.setUser} />
                 )}
