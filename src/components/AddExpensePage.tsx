@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Input } from 'reactstrap';
+import { Button, Card, Input } from 'reactstrap';
 
 import { Category } from '../api/categories/model';
 import CategoryService from '../api/categories/service';
@@ -131,7 +131,7 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
 
     render() {
         return (
-            <div style={{ width: 400, padding: 20 }}>
+            <Card style={{ width: 400, padding: 20 }}>
                 <div>
                     <h2>add expense</h2>
                     <Input
@@ -181,7 +181,7 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
                     />
                     <Button onClick={this.submitCategory}>add</Button>
                 </div>
-            </div>
+            </Card>
         );
     }
 }
