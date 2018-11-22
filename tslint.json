@@ -8,7 +8,9 @@
         ]
     },
     "rules": {
+        "forin": false,
         "interface-name": false,
+        "jsx-boolean-value": false,
         "jsx-no-lambda": false,
         "member-access": false,
         "no-console": false,
