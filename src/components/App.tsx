@@ -9,7 +9,6 @@ import ReduxState from '../redux/state';
 import Auth from './Auth';
 import Router from './Router';
 
-import './App.css';
 import MediaWatcher from './MediaWatcher';
 
 interface OwnProps {
@@ -29,19 +28,15 @@ type AllProps = OwnProps & ReduxStateProps & ReduxDispatchProps;
 
 class App extends React.Component<AllProps, {}> {
     render() {
-        return (
-            <div className="test">
-                {this.props.user ? (
-                    <MediaWatcher>
-                        <Router
-                            categoryService={this.props.categoryService}
-                            expenseService={this.props.expenseService}
-                        />
-                    </MediaWatcher>
-                ) : (
-                    <Auth setUser={this.props.setUser} />
-                )}
-            </div>
+        return this.props.user ? (
+            <MediaWatcher>
+                <Router
+                    categoryService={this.props.categoryService}
+                    expenseService={this.props.expenseService}
+                />
+            </MediaWatcher>
+        ) : (
+            <Auth setUser={this.props.setUser} />
         );
     }
 }

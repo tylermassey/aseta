@@ -1,6 +1,16 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Button, Card, Input } from 'reactstrap';
+import {
+    Alert,
+    Button,
+    Col,
+    Collapse,
+    Form,
+    FormGroup,
+    Input,
+    Label,
+    Row,
+} from 'reactstrap';
 
 import { Category } from '../api/categories/model';
 import CategoryService from '../api/categories/service';
@@ -23,6 +33,11 @@ interface ReduxStateProps {
     user: any;
 }
 
+interface RequestAlert {
+    type: 'success' | 'danger';
+    message: string;
+}
+
 interface OwnState {
     categories: Category[];
     expenseFields: {
@@ -33,6 +48,9 @@ interface OwnState {
     categoryFields: {
         name: string;
     };
+    categoryFormOpen: boolean;
+    expenseAlert: RequestAlert | undefined;
+    categoryAlert: RequestAlert | undefined;
 }
 
 type AllProps = OwnProps & ReduxStateProps;
@@ -55,6 +73,9 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
             categoryFields: {
                 name: '',
             },
+            categoryFormOpen: false,
+            expenseAlert: undefined,
+            categoryAlert: undefined,
         };
     }
 
@@ -84,9 +105,25 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
         const response = await this.props.expenseService.add(payload);
         switch (response.type) {
             case ResponseTypes.Error:
+                this.setState({
+                    expenseAlert: { type: 'danger', message: response.message },
+                });
+                break;
             case ResponseTypes.Success:
+                this.setState({
+                    expenseFields: {
+                        ...this.state.expenseFields,
+                        name: '',
+                        amount: 0,
+                    },
+                    expenseAlert: {
+                        type: 'success',
+                        message: 'Expense added!',
+                    },
+                });
                 break;
         }
+        setTimeout(() => this.setState({ expenseAlert: undefined }), 4000);
     };
 
     submitCategory = async () => {
@@ -97,13 +134,29 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
         const response = await this.props.categoryService.add(payload);
         switch (response.type) {
             case ResponseTypes.Error:
+                this.setState({
+                    categoryAlert: {
+                        type: 'danger',
+                        message: response.message,
+                    },
+                });
                 break;
             case ResponseTypes.Success:
                 this.setState({
                     categories: [...this.state.categories, response.payload],
+                    categoryFields: { name: '' },
+                    categoryAlert: {
+                        type: 'success',
+                        message: 'Category added!',
+                    },
                 });
+                setTimeout(
+                    () => this.setState({ categoryFormOpen: false }),
+                    2000
+                );
                 break;
         }
+        setTimeout(() => this.setState({ categoryAlert: undefined }), 4000);
     };
 
     handleFieldChange = (form: Forms, field: string) => (
@@ -129,59 +182,138 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
         });
     };
 
+    isFormValid = (): boolean =>
+        this.state.expenseFields.name.length > 0 &&
+        Boolean(this.state.expenseFields.amount);
+
+    getCategoryToggleText = (): string =>
+        this.state.categoryFormOpen
+            ? 'Hide category form'
+            : this.state.categories.length > 0
+            ? 'Show category form'
+            : 'Try adding a category!';
+
     render() {
         return (
-            <Card style={{ width: 400, padding: 20 }}>
-                <div>
-                    <h2>add expense</h2>
-                    <Input
-                        onChange={this.handleFieldChange(
-                            Forms.Expense,
-                            this.NAME
+            <Row style={{ justifyContent: 'center' }}>
+                <Col style={{ maxWidth: 600 }}>
+                    <Form>
+                        <FormGroup>
+                            <Label>Name</Label>
+                            <Input
+                                onChange={this.handleFieldChange(
+                                    Forms.Expense,
+                                    this.NAME
+                                )}
+                                placeholder="Sunday brunch"
+                                type="text"
+                                value={this.state.expenseFields.name}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label>Amount</Label>
+                            <Input
+                                onChange={this.handleFieldChange(
+                                    Forms.Expense,
+                                    this.AMOUNT
+                                )}
+                                type="number"
+                                value={this.state.expenseFields.amount}
+                            />
+                        </FormGroup>
+                        <FormGroup>
+                            {this.state.categories.length > 0 && (
+                                <>
+                                    <Label>Categories</Label>
+                                    <Input
+                                        type="select"
+                                        multiple
+                                        onChange={this.handleSelectInput(
+                                            Forms.Expense,
+                                            this.CATEGORY_IDS
+                                        )}
+                                    >
+                                        {this.state.categories.map(category => (
+                                            <option
+                                                key={category.id}
+                                                value={category.id}
+                                            >
+                                                {category.name}
+                                            </option>
+                                        ))}
+                                    </Input>
+                                </>
+                            )}
+                        </FormGroup>
+                        <Button
+                            block
+                            outline
+                            disabled={!this.isFormValid()}
+                            color="primary"
+                            onClick={this.submitExpense}
+                        >
+                            <i className="fa fa-circle-o-notch fa-spin" />
+                            Add Expense
+                        </Button>
+                    </Form>
+                    {this.state.expenseAlert && (
+                        <Alert
+                            color={this.state.expenseAlert.type}
+                            style={{ marginTop: 12 }}
+                        >
+                            {this.state.expenseAlert.message}
+                        </Alert>
+                    )}
+                    <div style={{ marginTop: 40 }} />
+                    <Collapse isOpen={this.state.categoryFormOpen}>
+                        <Form>
+                            <FormGroup>
+                                <Label>Name</Label>
+                                <Input
+                                    onChange={this.handleFieldChange(
+                                        Forms.Category,
+                                        this.CATEGORY
+                                    )}
+                                    placeholder="Eating out"
+                                    type="text"
+                                    value={this.state.categoryFields.name}
+                                />
+                            </FormGroup>
+                            <Button
+                                block
+                                outline
+                                color="primary"
+                                disabled={
+                                    this.state.categoryFields.name.length === 0
+                                }
+                                onClick={this.submitCategory}
+                            >
+                                Add Category
+                            </Button>
+                        </Form>
+                        {this.state.categoryAlert && (
+                            <Alert
+                                color={this.state.categoryAlert.type}
+                                style={{ marginTop: 12 }}
+                            >
+                                {this.state.categoryAlert.message}
+                            </Alert>
                         )}
-                        placeholder="name"
-                        type="text"
-                        value={this.state.expenseFields.name}
-                    />
-                    <Input
-                        onChange={this.handleFieldChange(
-                            Forms.Expense,
-                            this.AMOUNT
-                        )}
-                        placeholder="amount"
-                        type="number"
-                        value={this.state.expenseFields.amount}
-                    />
-                    <Input
-                        type="select"
-                        multiple={true}
-                        onChange={this.handleSelectInput(
-                            Forms.Expense,
-                            this.CATEGORY_IDS
-                        )}
+                    </Collapse>
+                    <Button
+                        block
+                        color="link"
+                        style={{ marginTop: 16 }}
+                        onClick={() =>
+                            this.setState({
+                                categoryFormOpen: !this.state.categoryFormOpen,
+                            })
+                        }
                     >
-                        {this.state.categories.map(category => (
-                            <option key={category.id} value={category.id}>
-                                {category.name}
-                            </option>
-                        ))}
-                    </Input>
-                    <Button onClick={this.submitExpense}>add</Button>
-                </div>
-                <div>
-                    <h2>add category</h2>
-                    <Input
-                        onChange={this.handleFieldChange(
-                            Forms.Category,
-                            this.CATEGORY
-                        )}
-                        placeholder="name"
-                        type="text"
-                        value={this.state.categoryFields.name}
-                    />
-                    <Button onClick={this.submitCategory}>add</Button>
-                </div>
-            </Card>
+                        {this.getCategoryToggleText()}
+                    </Button>
+                </Col>
+            </Row>
         );
     }
 }

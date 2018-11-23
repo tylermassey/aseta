@@ -37,8 +37,8 @@ class Skeleton extends React.Component<OwnProps, OwnState> {
         return (
             <div>
                 <Navbar
-                    color="light"
-                    light
+                    color="dark"
+                    dark
                     expand="md"
                     fixed={
                         isSizeAtLeast(this.props.mediaSize, MediaSizes.md)
@@ -70,8 +70,17 @@ class Skeleton extends React.Component<OwnProps, OwnState> {
                         </Nav>
                     </Collapse>
                 </Navbar>
-                <Container fluid>
-                    <div>{this.props.content}</div>
+                <Container
+                    style={{
+                        marginTop: isSizeAtLeast(
+                            this.props.mediaSize,
+                            MediaSizes.md
+                        )
+                            ? 30
+                            : 20,
+                    }}
+                >
+                    {this.props.content}
                 </Container>
             </div>
         );
