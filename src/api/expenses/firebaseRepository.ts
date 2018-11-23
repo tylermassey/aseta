@@ -1,7 +1,7 @@
 import { firestore } from 'firebase/app';
 
 import { errorResponse, Response, successResponse } from '../response';
-import { Expense } from './model';
+import { Expense, ExpenseFields } from './model';
 import { ExpenseRepository } from './service';
 
 class ExpenseFirebaseRepository implements ExpenseRepository {
@@ -18,6 +18,32 @@ class ExpenseFirebaseRepository implements ExpenseRepository {
         } catch (err) {
             return errorResponse(err.message, expense);
         }
+    }
+
+    async withUserId(
+        userId: string
+    ): Promise<Response<Expense[], { userId: string }>> {
+        try {
+            const querySnapshot = await this.collection
+                .where(ExpenseFields.UserId, '==', userId)
+                .get();
+            const docs = querySnapshot.docs;
+            return successResponse(docs.map(this.fromDoc));
+        } catch (err) {
+            return errorResponse(err.message, { userId });
+        }
+    }
+
+    private fromDoc(doc: any): Expense {
+        const docData = doc.data();
+        return {
+            id: doc.id,
+            userId: docData.userId,
+            name: docData.name,
+            amount: docData.amount,
+            categoryIds: docData.categoryIds,
+            addedWhen: docData.addedWhen,
+        };
     }
 }
 

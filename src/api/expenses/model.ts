@@ -14,4 +14,12 @@ interface Expense {
     addedWhen: number;
 }
 
-export { AddExpensePayload, Expense };
+enum ExpenseFields {
+    UserId = 'userId',
+    Name = 'name',
+    Amount = 'amount',
+    CategoryIds = 'categoryIds',
+    AddedWhen = 'addedWhen',
+}
+
+export { AddExpensePayload, Expense, ExpenseFields };

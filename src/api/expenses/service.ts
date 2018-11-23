@@ -6,6 +6,9 @@ import { AddExpensePayload, Expense } from './model';
 
 interface ExpenseRepository {
     add(expense: Expense): Promise<Response<Expense, Expense>>;
+    withUserId(
+        userId: string
+    ): Promise<Response<Expense[], { userId: string }>>;
 }
 
 class ExpenseService {
@@ -25,6 +28,12 @@ class ExpenseService {
             addedWhen: Date.now(),
         };
         return this.expenseRepository.add(expense);
+    }
+
+    async withUserId(
+        userId: string
+    ): Promise<Response<Expense[], { userId: string }>> {
+        return this.expenseRepository.withUserId(userId);
     }
 }
 

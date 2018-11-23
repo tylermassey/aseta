@@ -8,6 +8,7 @@ describe('Expenses service', () => {
 
     const expenseRepository = {
         add: jest.fn(),
+        withUserId: jest.fn(),
     };
 
     beforeEach(() => {
