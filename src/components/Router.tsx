@@ -27,7 +27,9 @@ const Router: React.StatelessComponent<OwnProps> = ({
                 component={() => (
                     <Skeleton
                         mediaSize={mediaSize || MediaSizes.xs}
-                        content={<AllExpensesPage />}
+                        content={
+                            <AllExpensesPage expenseService={expenseService} />
+                        }
                     />
                 )}
             />
