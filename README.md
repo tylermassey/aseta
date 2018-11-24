@@ -18,4 +18,4 @@ My goal is not to take over the expense tracking and budgeting space. I'm buildi
 -   Frontend: React + Bootstrap
 -   Authentication: Firebase
 -   Database: Firebase
--   Hosting: Now.sh
+-   Hosting: Netlify	
