@@ -8,6 +8,8 @@ import {
     Form,
     FormGroup,
     Input,
+    InputGroup,
+    InputGroupAddon,
     Label,
     Row,
 } from 'reactstrap';
@@ -55,7 +57,7 @@ interface OwnState {
 
 type AllProps = OwnProps & ReduxStateProps;
 
-class ExpensePage extends React.Component<AllProps, OwnState> {
+class AddExpensePage extends React.Component<AllProps, OwnState> {
     NAME = 'name';
     AMOUNT = 'amount';
     CATEGORY = 'name';
@@ -67,7 +69,7 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
             categories: [],
             expenseFields: {
                 name: '',
-                amount: 0,
+                amount: undefined as any,
                 categoryIds: [],
             },
             categoryFields: {
@@ -212,14 +214,21 @@ class ExpensePage extends React.Component<AllProps, OwnState> {
                         </FormGroup>
                         <FormGroup>
                             <Label>Amount</Label>
-                            <Input
-                                onChange={this.handleFieldChange(
-                                    Forms.Expense,
-                                    this.AMOUNT
-                                )}
-                                type="number"
-                                value={this.state.expenseFields.amount}
-                            />
+                            <InputGroup>
+                                <InputGroupAddon addonType="prepend">
+                                    $
+                                </InputGroupAddon>
+                                <Input
+                                    onChange={this.handleFieldChange(
+                                        Forms.Expense,
+                                        this.AMOUNT
+                                    )}
+                                    placeholder="20.00"
+                                    type="number"
+                                    pattern="[0-9]*"
+                                    value={this.state.expenseFields.amount}
+                                />
+                            </InputGroup>
                         </FormGroup>
                         <FormGroup>
                             {this.state.categories.length > 0 && (
@@ -323,5 +332,5 @@ const mapStateToProps = (state: ReduxState): ReduxStateProps => ({
 });
 
 export default connect<ReduxStateProps, {}, OwnProps>(mapStateToProps)(
-    ExpensePage
+    AddExpensePage
 );

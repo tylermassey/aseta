@@ -24,18 +24,21 @@ const Router: React.StatelessComponent<OwnProps> = ({
         <Switch>
             <Route
                 path="/expenses"
-                component={() => (
+                render={props => (
                     <Skeleton
                         mediaSize={mediaSize || MediaSizes.xs}
                         content={
-                            <AllExpensesPage expenseService={expenseService} />
+                            <AllExpensesPage
+                                {...props}
+                                expenseService={expenseService}
+                            />
                         }
                     />
                 )}
             />
             <Route
                 path="/metrics"
-                component={() => (
+                render={() => (
                     <Skeleton
                         mediaSize={mediaSize || MediaSizes.xs}
                         content={<MetricsPage />}
@@ -44,11 +47,12 @@ const Router: React.StatelessComponent<OwnProps> = ({
             />
             <Route
                 path="/"
-                component={() => (
+                render={props => (
                     <Skeleton
                         mediaSize={mediaSize || MediaSizes.xs}
                         content={
                             <AddExpensePage
+                                {...props}
                                 categoryService={categoryService}
                                 expenseService={expenseService}
                             />
