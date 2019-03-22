@@ -1,6 +1,6 @@
 import { firestore } from 'firebase';
 
-import { Response } from '../response';
+import { Response } from '../shared/response';
 import ExpenseFirebaseRepository from './firebaseRepository';
 import { AddExpensePayload, Expense } from './model';
 

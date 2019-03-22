@@ -5,7 +5,7 @@ import { Col, Row, Table } from 'reactstrap';
 
 import { Expense } from '../api/expenses/model';
 import ExpenseService from '../api/expenses/service';
-import { ResponseTypes } from '../api/response';
+import { ResponseTypes } from '../api/shared/response';
 import ReduxState from '../redux/state';
 
 interface OwnProps {

@@ -1,6 +1,6 @@
 import { firestore } from 'firebase/app';
 
-import { errorResponse, Response, successResponse } from '../response';
+import { errorResponse, Response, successResponse } from '../shared/response';
 import { Expense, ExpenseFields } from './model';
 import { ExpenseRepository } from './service';
 

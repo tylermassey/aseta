@@ -18,8 +18,9 @@ import { Category } from '../api/categories/model';
 import CategoryService from '../api/categories/service';
 import { AddExpensePayload } from '../api/expenses/model';
 import ExpenseService from '../api/expenses/service';
-import { ResponseTypes } from '../api/response';
+import { ResponseTypes } from '../api/shared/response';
 import ReduxState from '../redux/state';
+import CurrencyInput from './CurrencyInput';
 
 enum Forms {
     Expense = 'expenseFields',
@@ -172,6 +173,15 @@ class AddExpensePage extends React.Component<AllProps, OwnState> {
             },
         });
 
+    handleCurrencyChange = (amount: number) =>
+        this.setState({
+            ...this.state,
+            expenseFields: {
+                ...this.state.expenseFields,
+                amount,
+            },
+        });
+
     handleSelectInput = (form: Forms, field: string) => (event: any) => {
         this.setState({
             ...this.state,
@@ -218,15 +228,9 @@ class AddExpensePage extends React.Component<AllProps, OwnState> {
                                 <InputGroupAddon addonType="prepend">
                                     $
                                 </InputGroupAddon>
-                                <Input
-                                    onChange={this.handleFieldChange(
-                                        Forms.Expense,
-                                        this.AMOUNT
-                                    )}
-                                    placeholder="20.00"
-                                    type="number"
-                                    pattern="[0-9]*"
+                                <CurrencyInput
                                     value={this.state.expenseFields.amount}
+                                    onChange={this.handleCurrencyChange}
                                 />
                             </InputGroup>
                         </FormGroup>

@@ -1,6 +1,6 @@
 import 'jest';
 
-import { ResponseTypes, successResponse } from '../response';
+import { ResponseTypes, successResponse } from '../shared/response';
 import { AddCategoryPayload } from './model';
 import CategoryService from './service';
 

@@ -1,6 +1,6 @@
 import { firestore } from 'firebase';
 
-import { Response } from '../response';
+import { Response } from '../shared/response';
 import CategoryFirebaseRepository from './firebaseRepository';
 import { AddCategoryPayload, Category } from './model';
 

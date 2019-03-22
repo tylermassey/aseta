@@ -1,6 +1,6 @@
 import 'jest';
 
-import { ResponseTypes, successResponse } from '../response';
+import { ResponseTypes, successResponse } from '../shared/response';
 import ExpenseService from './service';
 
 describe('Expenses service', () => {
